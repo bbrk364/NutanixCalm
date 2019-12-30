@@ -12,6 +12,8 @@ Source URI - http://download.nutanix.com/calm/CentOS-7-x86_64-GenericCloud.qcow2
 Product Name - CentOS
 Product Version - 7
 
+https://bootcamps.nutanix.handsonworkshops.com/workshops/4202ba14-b4db-4cc4-ab73-2134e70b518e/view/calm_win/calm_win/
+
 Click Configuration and create the following Downloadable Image Configuration:
 
 Package Name - MSSQL2014_ISO
