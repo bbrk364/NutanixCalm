@@ -1,0 +1,12 @@
+#cloud-config
+disable_root: False
+ssh_pwauth: True
+password: 
+chpasswd:
+  list: |
+     root:nutanix/4u
+     centos:nutanix/4u
+  expire: False
+runcmd:
+ - echo Viva! A tua VM foi criada como @@{name}@@ no CALM! > /etc/motd
+ - echo >> /etc/motd
