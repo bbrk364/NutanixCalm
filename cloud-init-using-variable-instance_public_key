@@ -1,0 +1,8 @@
+#cloud-config
+users:
+	- name: centos
+ssh-authorised-keys:
+	- @@{instance_public_key}@@
+sudo: [‘ALL=(ALL) NOPASSWD:ALL’]
+packages:
+- lvm2
