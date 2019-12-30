@@ -1,0 +1,31 @@
+#!/bin/bash
+set -ex
+
+sudo yum install -y "http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm"
+sudo yum update -y
+sudo setenforce 0
+sudo sed -i 's/enforcing/disabled/g' /etc/selinux/config /etc/selinux/config
+sudo systemctl stop firewalld || true
+sudo systemctl disable firewalld || true
+sudo yum install -y mysql-community-server.x86_64
+
+sudo /bin/systemctl start mysqld
+sudo /bin/systemctl enable mysqld
+
+#Mysql secure installation
+mysql -u root<<-EOF
+
+UPDATE mysql.user SET Password=PASSWORD('@@{Mysql_password}@@') WHERE User='@@{Mysql_user}@@';
+DELETE FROM mysql.user WHERE User='@@{Mysql_user}@@' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+DELETE FROM mysql.user WHERE User='';
+DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%';
+
+FLUSH PRIVILEGES;
+EOF
+
+mysql -u @@{Mysql_user}@@ -p@@{Mysql_password}@@ <<-EOF
+CREATE DATABASE @@{Database_name}@@;
+GRANT ALL PRIVILEGES ON homestead.* TO '@@{Database_name}@@'@'%' identified by 'secret';
+
+FLUSH PRIVILEGES;
+EOF
